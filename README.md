@@ -13,14 +13,24 @@ Install packages:
 pip install -r <requirements_file>
 ```
 
+Example:
+
+```
+pip install -r requirements.txt
+```
+
 ## Run FastApi App with uvicorn
 
 ```
 uvicorn <FOLDER|PACKAGE>.<python_file>:app --reload
 ```
 
-Example:
+Examples:
 
 ```
 uvicorn helloword.hello:app --reload
+```
+
+```
+uvicorn main:app --reload
 ```
