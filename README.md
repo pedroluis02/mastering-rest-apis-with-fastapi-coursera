@@ -7,6 +7,12 @@ Mastering REST APIs with FastAPI - Coursera
 - fastapi
 - uvicorn
 
+Install packages:
+
+```
+pip install -r <requirements_file>
+```
+
 ## Run FastApi App with uvicorn
 
 ```
