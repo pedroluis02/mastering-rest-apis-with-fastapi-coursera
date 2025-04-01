@@ -2,8 +2,8 @@ import pytest
 from httpx import AsyncClient
 
 
-async def create_post(body: str, async_client: AsyncClient) -> dict:
-    response = await async_client.post(
+async def create_post(body: str, async_client_m3: AsyncClient) -> dict:
+    response = await async_client_m3.post(
         "/posts",
         json={"body": body},
     )
@@ -11,13 +11,13 @@ async def create_post(body: str, async_client: AsyncClient) -> dict:
 
 
 @pytest.fixture()
-async def created_post(async_client: AsyncClient):
-    return await create_post("Test Post", async_client)
+async def created_post(async_client_m3: AsyncClient):
+    return await create_post("Test Post", async_client_m3)
 
 
 @pytest.fixture()
-async def created_comment(async_client: AsyncClient, created_post: dict):
-    response = await async_client.post(
+async def created_comment(async_client_m3: AsyncClient, created_post: dict):
+    response = await async_client_m3.post(
         "/comments",
         json={"body": "Test Comment", "post_id": created_post["id"]},
     )
@@ -25,9 +25,9 @@ async def created_comment(async_client: AsyncClient, created_post: dict):
 
 
 @pytest.mark.anyio
-async def test_create_post(async_client: AsyncClient):
+async def test_create_post(async_client_m3: AsyncClient):
     body = "Test Post"
-    response = await async_client.post(
+    response = await async_client_m3.post(
         "/posts",
         json={"body": body},
     )
@@ -36,8 +36,8 @@ async def test_create_post(async_client: AsyncClient):
 
 
 @pytest.mark.anyio
-async def test_create_post_missing_data(async_client: AsyncClient):
-    response = await async_client.post(
+async def test_create_post_missing_data(async_client_m3: AsyncClient):
+    response = await async_client_m3.post(
         "/posts",
         json={},
     )
@@ -45,20 +45,20 @@ async def test_create_post_missing_data(async_client: AsyncClient):
 
 
 @pytest.mark.anyio
-async def test_get_all_posts(async_client: AsyncClient, created_post: dict):
-    response = await async_client.get("/posts")
+async def test_get_all_posts(async_client_m3: AsyncClient, created_post: dict):
+    response = await async_client_m3.get("/posts")
     assert response.status_code == 200
     assert response.json() == [created_post]
 
 
 @pytest.mark.anyio
 async def test_create_comment(
-        async_client: AsyncClient,
+        async_client_m3: AsyncClient,
         created_post: dict,
 ):
     body = "Test Comment"
 
-    response = await async_client.post(
+    response = await async_client_m3.post(
         "/comments",
         json={"body": body, "post_id": created_post["id"]},
     )
@@ -72,18 +72,18 @@ async def test_create_comment(
 
 @pytest.mark.anyio
 async def test_get_comments_on_post(
-        async_client: AsyncClient, created_post: dict, created_comment: dict
+        async_client_m3: AsyncClient, created_post: dict, created_comment: dict
 ):
-    response = await async_client.get(f"/posts/{created_post['id']}/comments")
+    response = await async_client_m3.get(f"/posts/{created_post['id']}/comments")
     assert response.status_code == 200
     assert response.json() == [created_comment]
 
 
 @pytest.mark.anyio
 async def test_get_post_with_comments(
-        async_client: AsyncClient, created_post: dict, created_comment: dict
+        async_client_m3: AsyncClient, created_post: dict, created_comment: dict
 ):
-    response = await async_client.get(f"/posts/{created_post['id']}")
+    response = await async_client_m3.get(f"/posts/{created_post['id']}")
     assert response.status_code == 200
     assert response.json() == {
         "post": created_post,
@@ -93,7 +93,7 @@ async def test_get_post_with_comments(
 
 @pytest.mark.anyio
 async def test_get_missing_post_with_comments(
-        async_client: AsyncClient, created_post: dict, created_comment: dict
+        async_client_m3: AsyncClient, created_post: dict, created_comment: dict
 ):
-    response = await async_client.get("/posts/2")
+    response = await async_client_m3.get("/posts/2")
     assert response.status_code == 404
