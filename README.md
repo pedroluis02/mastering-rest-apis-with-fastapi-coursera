@@ -32,5 +32,5 @@ uvicorn helloword.hello:app --reload
 ```
 
 ```
-uvicorn main:app --reload
+uvicorn module3.app:app --reload
 ```
