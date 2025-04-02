@@ -3,3 +3,5 @@ isort
 httpx
 pytest
 requests
+trio
+pytest-mock
