@@ -47,3 +47,39 @@ async def registered_user(async_client: AsyncClient) -> dict:
 async def logged_in_token(async_client: AsyncClient, registered_user: dict) -> str:
     response = await async_client.post("/token", json=registered_user)
     return response.json()["access_token"]
+
+
+@pytest.fixture()
+async def created_post(async_client: AsyncClient, logged_in_token: str):
+    return await create_post("Test Post", async_client, logged_in_token)
+
+
+@pytest.fixture()
+async def created_comment(
+        async_client: AsyncClient, created_post: dict, logged_in_token: str
+):
+    return await create_comment(
+        "Test Comment", created_post["id"], async_client, logged_in_token
+    )
+
+
+async def create_post(
+        body: str, async_client: AsyncClient, logged_in_token: str
+) -> dict:
+    response = await async_client.post(
+        "/posts",
+        json={"body": body},
+        headers={"Authorization": f"Bearer {logged_in_token}"},
+    )
+    return response.json()
+
+
+async def create_comment(
+        body: str, post_id: int, async_client: AsyncClient, logged_in_token: str
+) -> dict:
+    response = await async_client.post(
+        "/comments",
+        json={"body": body, "post_id": post_id},
+        headers={"Authorization": f"Bearer {logged_in_token}"},
+    )
+    return response.json()
