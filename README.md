@@ -2,6 +2,9 @@
 
 Mastering REST APIs with FastAPI - Coursera
 
+Full Course Repository:
+https://github.com/PacktPublishing/Mastering-REST-APIs-with-FastAPI
+
 ## Libraries
 
 - fastapi
