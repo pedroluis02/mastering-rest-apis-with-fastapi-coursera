@@ -1,7 +1,5 @@
 from pydantic import BaseModel, ConfigDict
 
-from .post import UserPost
-
 
 class CommentIn(BaseModel):
     body: str
@@ -13,8 +11,3 @@ class Comment(CommentIn):
 
     id: int
     user_id: int
-
-
-class UserPostWithComments(BaseModel):
-    post: UserPost
-    comments: list[Comment]

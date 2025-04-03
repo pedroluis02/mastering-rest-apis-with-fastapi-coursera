@@ -83,3 +83,14 @@ async def create_comment(
         headers={"Authorization": f"Bearer {logged_in_token}"},
     )
     return response.json()
+
+
+async def create_like(
+        post_id: int, async_client: AsyncClient, logged_in_token: str
+) -> dict:
+    response = await async_client.post(
+        "/likes",
+        json={"post_id": post_id},
+        headers={"Authorization": f"Bearer {logged_in_token}"},
+    )
+    return response.json()

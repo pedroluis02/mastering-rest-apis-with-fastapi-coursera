@@ -6,6 +6,7 @@ from fastapi.exception_handlers import http_exception_handler
 
 from .commentrouter import commentRouter
 from .database import database
+from .postlikerouter import likeRouter
 from .postrouter import postRouter
 from .userrouter import userRouter
 
@@ -25,6 +26,7 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(userRouter)
 app.include_router(postRouter)
 app.include_router(commentRouter)
+app.include_router(likeRouter)
 
 
 @app.exception_handler(HTTPException)
